@@ -38,7 +38,7 @@ identifier = {"a": 'id', "b": 'id', "c": 'id', "d": 'id', "e": 'id', "f": 'id', 
 identifier_key = identifier.keys()
 
 digit = {"1": "uno", "2": 'dos', "3": 'tres', "4": 'cuatro', "5": 'cinco', "6": 'seis', "7": 'siete', "8": 'ocho', "9": 'nueve', "0": 'cero', "_": 'guion bajo', "?": '', "/": 'diagonal', "\\": 'comentario',
-         "@": 'arroba', "$": 'signo dolar', "&": 'amperson', ")": 'Parentesís derecha', "(": 'Parentesís izquierda', "\"": 'diagonal invertida', "#": 'Signo gato',
+         "@": 'arroba', "$": 'signo dolar', "&": 'amperson', ")": 'Parentesís derecha', "(": 'Parentesís izquierda', "\"": 'comillas dobles', "#": 'Signo gato',
          "[": 'Corchete izquierda', "]": 'Corchete derecha', "{": 'Parentesis izquierda', "}": 'Parentesis derecha'}
 digitos_keys = digit.keys()
 
@@ -47,13 +47,11 @@ def analyse():
 
     print("-----------------ANALIZADOR LEXICO-----------------")
 
-    file = open("words.py")
+    file = open("I:\\OneDrive - Instituto Politecnico Nacional\\ESCOM\\SEMESTRE 2023-2\\COMPILADORES\\COMPILADORES\\PRACTICA_1\\words.py")
     words = file.read()
 
     count_lineas = 0
     words_split = words.split('\n')
-
-    new_words = ''
 
     for linea in words_split:
         count_lineas = count_lineas + 1
@@ -75,32 +73,56 @@ def analyse():
                 print(token, "Identifier is", identifier[token])
             if token in clave_keys:
                 print(token, "->", palabras_clave[token])
+            if token in digitos_keys:
+                print(token, "->", digit[token])
             try:
                 if token[0] in ("'", '"') and token[-1] in ("'", '"'):
                     print(token, "es una cadena de texto")
             except IndexError:
                 continue
-            analyze_token(token)
+            if len(token) > 6:
+                analyze_token(token)
 
 
 def analyze_token(token):
+    new_words = ''
+    new_words2 = ''
     for i in range(len(token)):
         new_words += token[i]
+        token = token[i::]
+        # print(new_words)
         if new_words in palabras_clave:
-            print(token, "->", palabras_clave[token])
+            print(new_words, "->", palabras_clave[new_words])
             new_words = ''
         if new_words in operadores_keys:
-            print(token, "->", operadores[token])
+            print(new_words, "->", operadores[new_words])
             new_words = ''
         if new_words in data_keys:
-            print(token, "->", tipo_data[token])
+            print(new_words, "->", tipo_data[new_words])
             new_words = ''
         if new_words in simbolos_keys:
-            print(token, "->", simbolos_puntuacion[token])
+            print(new_words, "->", simbolos_puntuacion[new_words])
+            new_words = ''
+        if new_words in digitos_keys:
+            if new_words in ("'", '"'):
+                #new_words2 += new_words
+                for j in range(len(token)):
+                    new_words2 += token[j]
+                    if new_words2[-1] == '"' or new_words2[-1] == "'":
+                        print(new_words2, "es un string")
+                    else:
+                        break
+            print(token, "->", digit[new_words])
             new_words = ''
         if new_words in identifier_key:
-            print(token, "Identifier is", identifier[token])
+            print(new_words, "Identifier is", identifier[new_words])
             new_words = ''
+        # if new_words in ("'", '"'):
+        #     print(token, "es una cadena de texto")
+
+        # if new_words in identifier_key:
+        #     print(token, "Identifier is", identifier[new_words])
+        #     new_words = ''
 
 
 def main():
