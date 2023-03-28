@@ -73,18 +73,34 @@ def analyse():
                 print(token, "->", simbolos_puntuacion[token])
             if token in identifier_key:
                 print(token, "Identifier is", identifier[token])
+            if token in clave_keys:
+                print(token, "->", palabras_clave[token])
             try:
                 if token[0] in ("'", '"') and token[-1] in ("'", '"'):
                     print(token, "es una cadena de texto")
             except IndexError:
                 continue
-            for i in range(len(token)):
-                new_words += token[i]
+            analyze_token(token)
 
 
 def analyze_token(token):
     for i in range(len(token)):
         new_words += token[i]
+        if new_words in palabras_clave:
+            print(token, "->", palabras_clave[token])
+            new_words = ''
+        if new_words in operadores_keys:
+            print(token, "->", operadores[token])
+            new_words = ''
+        if new_words in data_keys:
+            print(token, "->", tipo_data[token])
+            new_words = ''
+        if new_words in simbolos_keys:
+            print(token, "->", simbolos_puntuacion[token])
+            new_words = ''
+        if new_words in identifier_key:
+            print(token, "Identifier is", identifier[token])
+            new_words = ''
 
 
 def main():
