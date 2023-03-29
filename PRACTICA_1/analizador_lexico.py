@@ -25,7 +25,7 @@ data_keys = tipo_data.keys()
 palabras_clave = {'and': 'and', 'as': 'as', 'assert': 'assert', 'break': 'break', 'class': 'class', 'def': 'function', 'del': 'del',
                   'elif': 'elif', 'else': 'else', 'except': 'exception', 'exec': 'exec', 'finally': 'finally', 'for': 'cicle for', 'from': 'from', 'global': 'global variable', 'if': 'if statement', 'import': 'import',
                   'in': 'in', 'is': 'is', 'lambda': 'function lambda', 'not': 'negation', 'or': 'or', 'pass': 'pass', 'print': 'print', 'raise': 'raise', 'return': 'return', 'try': 'try exception', 'while': 'cicle while', 'with': 'with', 'yield': 'yield',
-                  'open': 'openfile'}
+                  'open': 'openfile', 'elif:': 'elif', 'else:': 'else', 'except:': 'exception', 'if:': 'if statement'}
 
 clave_keys = palabras_clave.keys()
 
@@ -47,7 +47,7 @@ def analyse():
 
     print("-----------------ANALIZADOR LEXICO-----------------")
 
-    file = open("I:\\OneDrive - Instituto Politecnico Nacional\\ESCOM\\SEMESTRE 2023-2\\COMPILADORES\\COMPILADORES\\PRACTICA_1\\words.py")
+    file = open("C:\\Users\\E0557113\\Documents\\COMPILADORES-main\\COMPILADORES-main\\PRACTICA_1\\words.py")
     words = file.read()
 
     count_lineas = 0
@@ -87,46 +87,64 @@ def analyse():
 def analyze_token(token):
     new_words = ''
     new_words2 = ''
+    new_words3 = ''
+    flag = 0
+    # Evaluar palabras clave
     for i in range(len(token)):
         new_words += token[i]
         # print(new_words)
         if new_words in palabras_clave:
             print(new_words, "->", palabras_clave[new_words])
+            new_words3 = token.replace(new_words, '')
             new_words = ''
-        if new_words in operadores_keys:
-            print(new_words, "->", operadores[new_words])
-            new_words = ''
+    #print(new_words3)
+    
+    
+    for i in range(len(new_words3)):
+        new_words += new_words3[i]
         if new_words in data_keys:
             print(new_words, "->", tipo_data[new_words])
+            new_words4 = new_words3.replace(new_words, '')
+            new_words = ''
+        else:
+            break
+    #print(new_words)
+    new_words = ''
+    for i in range(len(new_words3)):
+        new_words += new_words3[i]
+        
+        if new_words in operadores_keys:
+            print(new_words, "->", operadores[new_words])
+            #token = token.replace(new_words, '')
             new_words = ''
         if new_words in simbolos_keys:
             print(new_words, "->", simbolos_puntuacion[new_words])
+            #token = token.replace(new_words, '')
             new_words = ''
         if new_words in digitos_keys:
-            if new_words in ("",""):
-                continue
-            else:
-                print(new_words,"->" digit[new_words])
-                new_words="
-            try:
-                if new_words[1] in ("","") and new_words[-1] in ("",""):
-                    print(new_words,"Es String ")
-                    new_words="
-                else:
-                    continue
-            except IndexError:
-                continue
+            print(new_words, "->", digit[new_words])
+            #token = token.replace(new_words, '')
+            new_words = ''
+        if new_words in identifier_key:
+            print(new_words, "->", identifier[new_words])
+            new_words = ''
+    
+   
+    
+    for i in range(len(new_words3)):
+        new_words += new_words3[i]
+        if new_words in identifier_key:
+            flag += 1
+            new_words2 += new_words
+            
+            #dsl
+        new_words = ''
+            #print(new_words, "->", identifier[new_words])
+            #new_words = ''
+    if flag > 2:
+        print(new_words2, "es un string o una variable")
 
-        # if new_words in identifier_key:
-        #     print(new_words, "Identifier is", identifier[new_words])
-        #     new_words = ''
-        # if new_words in ("'", '"'):
-        #     print(token, "es una cadena de texto")
-
-        # if new_words in identifier_key:
-        #     print(token, "Identifier is", identifier[new_words])
-        #     new_words = ''
-
+    
 
 def main():
     analyse()
