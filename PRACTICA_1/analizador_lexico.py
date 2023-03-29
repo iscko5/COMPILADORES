@@ -89,7 +89,6 @@ def analyze_token(token):
     new_words2 = ''
     for i in range(len(token)):
         new_words += token[i]
-        token = token[i::]
         # print(new_words)
         if new_words in palabras_clave:
             print(new_words, "->", palabras_clave[new_words])
@@ -103,20 +102,10 @@ def analyze_token(token):
         if new_words in simbolos_keys:
             print(new_words, "->", simbolos_puntuacion[new_words])
             new_words = ''
-        if new_words in digitos_keys:
-            if new_words in ("'", '"'):
-                #new_words2 += new_words
-                for j in range(len(token)):
-                    new_words2 += token[j]
-                    if new_words2[-1] == '"' or new_words2[-1] == "'":
-                        print(new_words2, "es un string")
-                    else:
-                        break
-            print(token, "->", digit[new_words])
-            new_words = ''
-        if new_words in identifier_key:
-            print(new_words, "Identifier is", identifier[new_words])
-            new_words = ''
+
+        # if new_words in identifier_key:
+        #     print(new_words, "Identifier is", identifier[new_words])
+        #     new_words = ''
         # if new_words in ("'", '"'):
         #     print(token, "es una cadena de texto")
 
