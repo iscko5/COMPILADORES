@@ -3,7 +3,7 @@
     
     Alumnos:
         - Sánchez Verdiguel Isaac
-        - Morales Víctor
+        - Martínez Guerrero Víctor Joaquín
     Materia:
         Compiladores
     
@@ -102,6 +102,20 @@ def analyze_token(token):
         if new_words in simbolos_keys:
             print(new_words, "->", simbolos_puntuacion[new_words])
             new_words = ''
+        if new_words in digitos_keys:
+            if new_words in ("",""):
+                continue
+            else:
+                print(new_words,"->" digit[new_words])
+                new_words="
+            try:
+                if new_words[1] in ("","") and new_words[-1] in ("",""):
+                    print(new_words,"Es String ")
+                    new_words="
+                else:
+                    continue
+            except IndexError:
+                continue
 
         # if new_words in identifier_key:
         #     print(new_words, "Identifier is", identifier[new_words])
