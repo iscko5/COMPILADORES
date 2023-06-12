@@ -210,6 +210,7 @@ class Patterns:
                 raise Exception('FUNCTION faltante')
         return result
 
+    """
     def VAR_DECL(self):
         print("VAR_DECL")
         return [
@@ -236,7 +237,32 @@ class Patterns:
                 ]
             }
         ]
+    """
 
+    def VAR_DECL(self):
+        result = []
+        if (self.findToken('var')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+
+            if (self.findToken(Identificador)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('Identificador faltante')
+
+            if (self.findToken(self.VAR_INIT)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+
+            if (self.findToken(';')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('; faltante')
+        return result
+
+    """
     def VAR_INIT(self):
         print("VAR_INIT")
         return [
@@ -252,8 +278,23 @@ class Patterns:
                 ]
             },
         ]
+    """
+
+    def VAR_INIT(self):
+        result = []
+        if (self.findToken('=')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+
+            if (self.findToken(self.EXPRESSION)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('EXPRESSION faltante 1')
+        return result
 
     # SENTENCIAS
+    """
     def STATEMENT(self):
         print("STATEMENT")
         return [
@@ -293,8 +334,36 @@ class Patterns:
                 'error': 'BLOCK faltante'
             },
         ]
+    
+    """
 
-    def EXPR_STMT(self):
+    def STATEMENT(self):
+        result = []
+        if (self.findToken(self.EXPR_STMT)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.FOR_STMT)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.IF_STMT)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.PRINT_STMT)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.RETURN_STMT)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.WHILE_STMT)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.BLOCK)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
+     def EXPR_STMT(self):
         print("EXPR_STMT")
         return [
             {
@@ -307,7 +376,19 @@ class Patterns:
                 'error': '; faltante 2'
             }
         ]
+    """
 
+    def EXPR_STMT(self):
+        result = []
+        if (self.findToken(self.EXPRESSION)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(';')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def FOR_STMT(self):
         print("FOR_STMT")
         return [
@@ -349,8 +430,52 @@ class Patterns:
                 ]
             },
         ]
+    """
 
-    def FOR_STMT_1(self):
+    def FOR_STMT(self):
+        result = []
+        if (self.findToken('for')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+
+            if (self.findToken('(')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('( faltante')
+
+            if (self.findToken(self.FOR_STMT_1)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('FOR_STMT_1 faltante')
+
+            if (self.findToken(self.FOR_STMT_2)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('FOR_STMT_2 faltante')
+
+            if (self.findToken(self.FOR_STMT_3)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('FOR_STMT_3 faltante')
+
+            if (self.findToken(')')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception(') faltante')
+
+            if (self.findToken(self.STATEMENT)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('STATEMENT faltante')
+        return result
+    """
+     def FOR_STMT_1(self):
         print("FOR_STMT_1")
         return [
             {
@@ -369,7 +494,19 @@ class Patterns:
             #     'error': '; faltante'
             # },
         ]
+    """
 
+    def FOR_STMT_1(self):
+        result = []
+        if (self.findToken(self.VAR_DECL)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.EXPR_STM)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def FOR_STMT_2(self):
         print("FOR_STMT_2")
         return [
@@ -384,7 +521,22 @@ class Patterns:
                 'error': '; faltante'
             },
         ]
+    """
 
+    def FOR_STMT_2(self):
+        result = []
+        if (self.findToken(self.EXPRESSION)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+
+        if (self.findToken(';')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception('; faltante')
+        return result
+
+    """
     def FOR_STMT_3(self):
         print("FOR_STMT_3")
         return [
@@ -394,7 +546,16 @@ class Patterns:
                 'error': 'EXPRESSION faltante 4'
             },
         ]
+    """
 
+    def FOR_STMT_3(self):
+        result = []
+        if (self.findToken(self.EXPRESSION)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def IF_STMT(self):
         print("IF_STMT")
         return [
@@ -431,7 +592,47 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def IF_STMT(self):
+        result = []
+        if (self.findToken('if')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+
+            if (self.findToken('(')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('( faltante')
+
+            if (self.findToken(self.EXPRESSION)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('EXPRESSION faltante 5')
+
+            if (self.findToken(')')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception(') faltante')
+
+            if (self.findToken(self.STATEMENT)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('STATEMENT faltante')
+
+            if (self.findToken(self.ELSE_STATEMENT)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('ELSE_STATEMENT faltante')
+
+        return result
+
+    """
     def ELSE_STATEMENT(self):
         print("ELSE_STATEMENT")
         return [
@@ -447,7 +648,21 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def ELSE_STATEMENT(self):
+        result = []
+        if (self.findToken('else')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+
+            if (self.findToken(self.STATEMENT)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('STATEMENT faltante')
+
+    """
     def PRINT_STMT(self):
         print("PRINT_STMT")
         return [
@@ -469,7 +684,25 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def PRINT_STMT(self):
+        result = []
+        if (self.findToken('print')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.EXPRESSION)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('EXPRESSION faltante 6')
+            if (self.findToken(';')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('; faltante')
+
+    """
     def RETURN_STMT(self):
         print("RETURN_STMT")
         return [
@@ -491,7 +724,25 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def RETURN_STMT(self):
+        result = []
+        if (self.findToken('return')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.RETURN_EXP_OPC)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+
+            if (self.findToken(';')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('; faltante')
+        return result
+
+    """
     def RETURN_EXP_OPC(self):
         print("RETURN_EXP_OPC")
         return [
@@ -500,8 +751,17 @@ class Patterns:
                 'required': False,
             },
         ]
+    """
 
-    def WHILE_STMT(self):
+    def RETURN_EXP_OPC(self):
+        result = []
+        if (self.findToken(self.EXPRESSION)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
+     def WHILE_STMT(self):
         print("WHILE_STMT")
         return [
             {
@@ -533,7 +793,41 @@ class Patterns:
             },
 
         ]
+    """
 
+    def WHILE_STMT(self):
+        result = []
+        if (self.findToken('while')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+
+            if (self.findToken('(')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('( faltante')
+
+            if (self.findToken(self.EXPRESSION)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('EXPRESSION faltante 7')
+
+            if (self.findToken(')')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception(') faltante')
+
+            if (self.findToken(self.STATEMENT)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('STATEMENT faltante')
+
+        return result
+
+    """
     def BLOCK(self):
         print("BLOCK")
         return [
@@ -555,7 +849,26 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def BLOCK(self):
+        result = []
+        if (self.findToken('{')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.BLOCK_DECL)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('BLOCK_DECL faltante')
+            if (self.findToken('}')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('} faltante')
+        return result
+
+    """
     def BLOCK_DECL(self):
         print("BLOCK_DECL")
         return [
@@ -565,14 +878,19 @@ class Patterns:
                 'looping': True
             },
         ]
+    """
 
     def BLOCK_DECL(self):
         result = []
-        while self.findToken(self.DECLARATION):
+        while (self.findToken(self.DECLARATION)):
             result.append(self.tokens[0])
             del self.tokens[0]
+        # if len(result) == 0:
+            #raise Exception('DECLARATION faltante')
+        return result
 
     # EXPRESIONES
+    """
     def EXPRESSION(self):
         print("EXPRESSION")
         return [
@@ -582,7 +900,16 @@ class Patterns:
                 'error': 'ASSIGNMENT faltante'
             }
         ]
+    """
 
+    def EXPRESSION(self):
+        result = []
+        if (self.findToken(self.ASSIGNMENT)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def ASSIGNMENT(self):
         print("ASSIGNMENT")
         return [
@@ -597,7 +924,19 @@ class Patterns:
                 'error': 'ASSIGNMENT_OPC faltante'
             },
         ]
+    """
 
+    def ASSIGNMENT(self):
+        result = []
+        if (self.findToken(self.LOGIC_OR)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.ASSIGNMENT_OPC)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def ASSIGNMENT_OPC(self):
         print("ASSIGNMENT_OPC")
         return [
@@ -613,7 +952,20 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def ASSIGNMENT_OPC(self):
+        result = []
+        if (self.findToken('=')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.EXPRESSION)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('EXPRESSION faltante 8')
+
+    """
     def LOGIC_OR(self):
         print("LOGIC_OR")
         return [
@@ -627,7 +979,19 @@ class Patterns:
                 'error': 'LOGIC_OR_2 faltante'
             }
         ]
+    """
 
+    def LOGIC_OR(self):
+        result = []
+        if (self.findToken(self.LOGIC_AND)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.LOGIC_OR_2)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def LOGIC_OR_2(self):
         print("LOGIC_OR_2")
         return [
@@ -648,7 +1012,26 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def LOGIC_OR_2(self):
+        result = []
+        if (self.findToken('or')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.LOGIC_AND)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('LOGIC_AND faltante')
+            if (self.findToken(self.LOGIC_OR_2)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('LOGIC_OR_2 faltante')
+        return result
+
+    """
     def LOGIC_AND(self):
         print("LOGIC_AND")
         return [
@@ -662,7 +1045,19 @@ class Patterns:
                 'error': 'LOGIC_AND_2 faltante'
             }
         ]
+    """
 
+    def LOGIC_AND(self):
+        result = []
+        if (self.findToken(self.EQUALITY)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.LOGIC_AND_2)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def LOGIC_AND_2(self):
         print("LOGIC_AND_2")
         return [
@@ -683,7 +1078,26 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def LOGIC_AND_2(self):
+        result = []
+        if (self.findToken('and')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.EQUALITY)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('EQUALITY faltante')
+            if (self.findToken(self.LOGIC_AND_2)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('LOGIC_AND_2 faltante')
+        return result
+
+    """
     def EQUALITY(self):
         print("EQUALITY")
         return [
@@ -698,7 +1112,19 @@ class Patterns:
                 'error': 'EQUALITY_2 faltante'
             },
         ]
+    """
 
+    def EQUALITY(self):
+        result = []
+        if (self.findToken(self.COMPARISON)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.EQUALITY_2)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def EQUALITY_2(self):
         print("EQUALITY_2")
         return [
@@ -725,7 +1151,30 @@ class Patterns:
                 ]
             },
         ]
+    """
+    # duda
 
+    def EQUALITY_2(self):
+        result = []
+        if (self.findToken('!=')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.COMPARISON)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('COMPARISON faltante')
+        elif (self.findToken('==')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.COMPARISON)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('COMPARISON faltante')
+        return result
+
+    """
     def COMPARISON(self):
         print("COMPARISON")
         return [
@@ -740,8 +1189,21 @@ class Patterns:
                 'error': 'COMPARISON_2 faltante'
             }
         ]
+    """
+    # duda
 
-    def COMPARISON_2(self):
+    def COMPARISON(self):
+        result = []
+        if (self.findToken(self.TERM)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        while (self.findToken(self.COMPARISON_2)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
+    ef COMPARISON_2(self):
         print("COMPARISON_2")
         return [
             {
@@ -789,7 +1251,48 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def COMPARISON_2(self):
+        result = []
+        if (self.findToken('>')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.TERM)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('TERM faltante')
+
+        elif (self.findToken('>=')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.TERM)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('TERM faltante')
+
+        elif (self.findToken('<')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.TERM)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('TERM faltante')
+
+        elif (self.findToken('<=')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.TERM)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('TERM faltante')
+        return result
+
+    """
     def TERM(self):
         print("TERM")
         return [
@@ -804,8 +1307,20 @@ class Patterns:
                 'looping': True
             }
         ]
+    """
 
-    def TERM_2(self):
+    def TERM(self):
+        result = []
+        if (self.findToken(self.FACTOR)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        while (self.findToken(self.TERM_2)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
+     def TERM_2(self):
         print("TERM_2")
         return [
             {
@@ -831,7 +1346,29 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def TERM_2(self):
+        result = []
+        if (self.findToken('-')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.FACTOR)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('FACTOR faltante')
+        elif (self.findToken('+')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.FACTOR)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('FACTOR faltante')
+        return result
+
+    """
     def FACTOR(self):
         print("FACTOR")
         return [
@@ -846,7 +1383,19 @@ class Patterns:
                 'error': 'FACTOR_2 faltante'
             },
         ]
+    """
 
+    def FACTOR(self):
+        result = []
+        if (self.findToken(self.UNARY)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.FACTOR_2)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def FACTOR_2(self):
         print("FACTOR_2")
         return [
@@ -883,7 +1432,39 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def FACTOR_2(self):
+        result = []
+        if (self.findToken('/')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.UNARY)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('UNARY faltante')
+            if (self.findToken(self.FACTOR_2)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('FACTOR_2 faltante')
+        if (self.findToken('*')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.UNARY)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('UNARY faltante')
+            if (self.findToken(self.FACTOR_2)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('FACTOR_2 faltante')
+        return result
+
+    """
     def UNARY(self):
         print("UNARY")
         return [
@@ -913,7 +1494,32 @@ class Patterns:
                 'error': 'CALL faltante'
             },
         ]
+    """
 
+    def UNARY(self):
+        result = []
+        if (self.findToken('!')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.UNARY)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('UNARY faltante')
+        elif (self.findToken('-')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.UNARY)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('UNARY faltante')
+        elif (self.findToken(self.CALL)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def CALL(self):
         print("CALL")
         return [
@@ -928,7 +1534,19 @@ class Patterns:
                 'error': 'CALL_2 faltante'
             },
         ]
+    """
 
+    def CALL(self):
+        result = []
+        if (self.findToken(self.PRIMARY)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(self.CALL_2)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def CALL_2(self):
         print("CALL_2")
         return [
@@ -968,7 +1586,44 @@ class Patterns:
                 ]
             }
         ]
+    """
 
+    def CALL_2(self):
+        result = []
+        if (self.findToken('(')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.ARGUMENTS_OPC)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('ARGUMENTS_OPC faltante')
+            if (self.findToken(')')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception(') faltante')
+            if (self.findToken(self.CALL_2)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('CALL_2 faltante')
+        elif (self.findToken('.')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(Identificador)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('id faltante')
+            if (self.findToken(self.CALL_2)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('CALL_2 faltante')
+        return result
+
+    """
     def PRIMARY(self):
         print("PRIMARY")
         return [
@@ -1033,8 +1688,60 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def PRIMARY(self):
+        result = []
+        if (self.findToken('true')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken('false')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken('null')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken('this')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(Numero)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(Cadena)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken(Identificador)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        elif (self.findToken('(')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.EXPRESSION)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('EXPRESSION faltante 9')
+            if (self.findToken(')')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception(') faltante')
+        elif (self.findToken('super')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken('.')):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('. faltante')
+            if (self.findToken(Identificador)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('id faltante')
+        return result
     # OTRAS
+    """
     def FUNCTION(self):
         print("FUNCTION")
         return [
@@ -1064,7 +1771,37 @@ class Patterns:
                 'error': 'BLOCK faltante'
             },
         ]
+    """
 
+    def FUNCTION(self):
+        result = []
+        if (self.findToken(Identificador)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception('id faltante')
+        if (self.findToken('(')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception('( faltante')
+        if (self.findToken(self.PARAMETER_OPC)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception('PARAMETER_OPC faltante')
+        if (self.findToken(')')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception(') faltante')
+        if (self.findToken(self.BLOCK)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception('BLOCK faltante')
+        return result
+    """
     def FUNCTIONS(self):
         print("FUNCTIONS")
         return [
@@ -1074,7 +1811,16 @@ class Patterns:
                 'looping': True
             }
         ]
+    """
 
+    def FUNCTIONS(self):
+        result = []
+        while (self.findToken(self.FUNCTION)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def PARAMETER_OPC(self):
         print("PARAMETER_OPC")
         return [
@@ -1083,7 +1829,16 @@ class Patterns:
                 'required': False,
             },
         ]
+    """
 
+    def PARAMETER_OPC(self):
+        result = []
+        if (self.findToken(self.PARAMETERS)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def PARAMETERS(self):
         print("PARAMETERS")
         return [
@@ -1098,7 +1853,23 @@ class Patterns:
                 'error': 'PARAMETERS_2 faltante'
             },
         ]
+    """
 
+    def PARAMETERS(self):
+        result = []
+        if (self.findToken(Identificador)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception('id faltante')
+        if (self.findToken(self.PARAMETERS_2)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception('PARAMETERS_2 faltante')
+        return result
+
+    """
     def PARAMETERS_2(self):
         print("PARAMETERS_2")
         return [
@@ -1115,7 +1886,21 @@ class Patterns:
                 ]
             },
         ]
+    """
 
+    def PARAMETERS_2(self):
+        result = []
+        while (self.findToken(',')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(Identificador)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('id faltante')
+        return result
+
+    """
     def ARGUMENTS_OPC(self):
         print("ARGUMENTS_OPC")
         return [
@@ -1124,7 +1909,16 @@ class Patterns:
                 'required': False,
             },
         ]
+    """
 
+    def ARGUMENTS_OPC(self):
+        result = []
+        if (self.findToken(self.ARGUMENTS)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        return result
+
+    """
     def ARGUMENTS(self):
         print("ARGUMENTS")
         return [
@@ -1139,6 +1933,22 @@ class Patterns:
                 'error': 'ARGUMENTS_2 faltante'
             },
         ]
+    """
+
+    def ARGUMENTS(self):
+        result = []
+        if (self.findToken(self.EXPRESSION)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception('EXPRESSION faltante 10')
+        if (self.findToken(self.ARGUMENTS_2)):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+        else:
+            raise Exception('ARGUMENTS_2 faltante')
+        return result
+    # aqui
 
     def ARGUMENTS_2(self):
         print("ARGUMENTS_2")
