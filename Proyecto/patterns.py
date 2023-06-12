@@ -1948,8 +1948,8 @@ class Patterns:
         else:
             raise Exception('ARGUMENTS_2 faltante')
         return result
-    # aqui
-
+    
+"""
     def ARGUMENTS_2(self):
         print("ARGUMENTS_2")
         return [
@@ -1966,3 +1966,16 @@ class Patterns:
                 ]
             },
         ]
+"""
+
+def ARGUMENTS_2(self):
+        result = []
+        while (self.findToken(',')):
+            result.append(self.tokens[0])
+            del self.tokens[0]
+            if (self.findToken(self.EXPRESSION)):
+                result.append(self.tokens[0])
+                del self.tokens[0]
+            else:
+                raise Exception('EXPRESSION faltante 11')
+        return result
