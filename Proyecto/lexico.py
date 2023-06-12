@@ -105,32 +105,32 @@ class Especiales(Enum):
 
 
 class Numero:
-    def _init_(self, string) -> None:
+    def __init__(self, string) -> None:
         self.value = string
 
-    def _str_(self) -> str:
+    def __str__(self) -> str:
         return 'Numero.' + self.value
 
 
 class Cadena:
-    def _init_(self, string) -> None:
+    def __init__(self, string) -> None:
         self.value = string
 
-    def _str_(self) -> str:
+    def __str__(self) -> str:
         return 'Cadena.' + self.value
 
 
 class Comentario:
-    def _init_(self, string) -> None:
+    def __init__(self, string) -> None:
         self.value = string
 
-    def _str_(self) -> str:
+    def __str__(self) -> str:
         return 'Comentario.' + self.value
 
 
 class Identificador:
-    def _init_(self, string) -> None:
+    def __init__(self, string) -> None:
         self.value = string
 
-    def _str_(self) -> str:
+    def __str__(self) -> str:
         return 'Identificador.' + self.value
