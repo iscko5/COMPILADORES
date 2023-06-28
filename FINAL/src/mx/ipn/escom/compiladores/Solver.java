@@ -23,14 +23,17 @@ public class Solver {
 				validateVariable(n, this.tabla);
 				if (this.error)
 					return null;
-				Tuple<TipoToken, Object> res = this.tabla.obtener((String) n.getValue().lexema);
+				Object valor = this.tabla.obtenerValue((String) n.getValue().lexema);
+				TipoToken tipo = this.tabla.obtenerType((String) n.getValue().lexema);
 
-				if (res.x == TipoToken.NUMERO) {
-					return res.y;
-				} else if (res.x == TipoToken.CADENA) {
-					return String.valueOf(res.y);
-				} else if (res.x == TipoToken.TRUE || res.x == TipoToken.FALSE) {
-					return res.x == TipoToken.TRUE;
+				if (tipo == TipoToken.NUMERO) {
+					return valor;
+				} else if (tipo == TipoToken.CADENA) {
+					return String.valueOf(valor);
+				} else if (tipo == TipoToken.TRUE) {
+					return true;
+				} else if (tipo == TipoToken.FALSE) {
+					return false;
 				} else {
 					this.errorMessage = ("Valor inválido de identificador");
 					this.error = true;
@@ -58,6 +61,7 @@ public class Solver {
 		if (this.error)
 			return null;
 
+		// Identifica el simbolo para la precedencia
 		if (resultadoIzquierdo instanceof Double && resultadoDerecho instanceof Double) {
 			switch (n.getValue().tipo) {
 				case SUMA:
@@ -131,7 +135,7 @@ public class Solver {
 				if (this.error)
 					return null;
 
-				Object valor = this.tabla.obtener((String) n.getValue().lexema);
+				Object valor = this.tabla.obtenerValue((String) n.getValue().lexema);
 				if (valor.getClass() != Boolean.class) {
 					this.errorMessage = ("Booleano inválido");
 					this.error = true;
@@ -165,13 +169,9 @@ public class Solver {
 		}
 		n.getHijos().remove(0);
 
-		// Checar si el ultimo nodo es un else
-		if (n.getHijos().get(n.getHijos().size() - 1).getValue().tipo == TipoToken.ELSE) {
-			n.getHijos().remove(n.getHijos().size() - 1);
-		}
-
 		if ((Boolean) condicion) {
 			// Correr lo de adentro del if
+			n.getHijos().remove(n.getHijos().size() - 1);
 			Arbol arbol = new Arbol(n);
 			arbol.recorrer();
 		} else if (n.getHijos().get(n.getHijos().size() - 1).getValue().tipo == TipoToken.ELSE) {
@@ -213,35 +213,42 @@ public class Solver {
 			return null;
 		}
 
+		/**
+		 * Si es VAR, se tiene que checar que no exista
+		 * Si es SET, se tiene que checar que exista
+		 * 
+		 * Si es VAR, se tiene que asignar
+		 */
 		if (n.getValue().tipo == TipoToken.VAR) {
-			// Intentar inicializar variable
 			invalidateVariable(n.getHijos().get(0), tabla);
 			if (this.error) {
 				return null;
 			}
-			// Agregar hijo 1 como identificador
 			this.tabla.asignar(n.getHijos().get(0).getValue().lexema);
 		} else if (n.getValue().tipo == TipoToken.SET) {
-			// Checar que variable exista
 			validateVariable(n.getHijos().get(0), tabla);
 			if (this.error)
 				return null;
 		}
 
+		/**
+		 * Si hay segundo hijo, es que hay un valor para ponerle a la variable
+		 */
 		if (n.getHijos().size() == 2) {
-			// Agregar solución de hijo 2 como valor de identificador
 			Object res = resolverAritmetico(n.getHijos().get(1));
 			if (this.error)
 				return null;
-			TipoToken tipo = null;
+			TipoToken tipo = res instanceof Double
+					? TipoToken.NUMERO
+					: res instanceof String
+							? TipoToken.CADENA
+							: res instanceof Boolean
+									? (Boolean) res
+											? TipoToken.TRUE
+											: TipoToken.FALSE
+									: null;
 
-			if (res instanceof Double) {
-				tipo = TipoToken.NUMERO;
-			} else if (res instanceof String) {
-				tipo = TipoToken.CADENA;
-			} else if (res instanceof Boolean) {
-				tipo = (Boolean) res ? TipoToken.TRUE : TipoToken.FALSE;
-			} else {
+			if (tipo == null) {
 				this.errorMessage = ("Valor de asignación inválido");
 				this.error = true;
 				return null;
