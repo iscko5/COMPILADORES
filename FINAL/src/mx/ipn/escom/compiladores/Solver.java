@@ -153,35 +153,29 @@ public class Solver {
 			return null;
 		}
 
-		// Checar la condición
-		int end;
-		Nodo nodoElse = new Nodo(null);
-		Boolean boolElse = false;
+		// evaluando la condicion
 		Object condicion = resolverAritmetico(n.getHijos().get(0));
 		if (this.error)
 			return null;
-		// Checar que la condición sea booleana
+		// verificando que la condicion sea booleana
 		if (!(condicion instanceof Boolean)) {
 			this.errorMessage = ("Booleano inválido");
 			this.error = true;
 			return null;
 		}
+		n.getHijos().remove(0);
 
 		// Checar si el ultimo nodo es un else
-		n.getHijos().remove(0);
-		end = n.getHijos().size() - 1;
-		if (n.getHijos().get(end).getValue().tipo == TipoToken.ELSE) {
-			boolElse = true;
-			nodoElse = n.getHijos().get(end);
-			n.getHijos().remove(end);
+		if (n.getHijos().get(n.getHijos().size() - 1).getValue().tipo == TipoToken.ELSE) {
+			n.getHijos().remove(n.getHijos().size() - 1);
 		}
 
 		if ((Boolean) condicion) {
 			// Correr lo de adentro del if
 			Arbol arbol = new Arbol(n);
 			arbol.recorrer();
-		} else if (boolElse) {
-			Arbol arbol = new Arbol(nodoElse);
+		} else if (n.getHijos().get(n.getHijos().size() - 1).getValue().tipo == TipoToken.ELSE) {
+			Arbol arbol = new Arbol(n.getHijos().get(n.getHijos().size() - 1));
 			arbol.recorrer();
 		}
 
@@ -200,11 +194,11 @@ public class Solver {
 			return null;
 		}
 
-		Object valor = resolverAritmetico(n.getHijos().get(0));
+		Object imprimir = resolverAritmetico(n.getHijos().get(0));
 		if (this.error)
 			return null;
 
-		System.out.println(valor);
+		System.out.println(imprimir);
 		return null;
 	}
 
@@ -221,7 +215,7 @@ public class Solver {
 
 		if (n.getValue().tipo == TipoToken.VAR) {
 			// Intentar inicializar variable
-			invalidateVariable(n, 0, tabla);
+			invalidateVariable(n.getHijos().get(0), tabla);
 			if (this.error) {
 				return null;
 			}
@@ -229,7 +223,7 @@ public class Solver {
 			this.tabla.asignar(n.getHijos().get(0).getValue().lexema);
 		} else if (n.getValue().tipo == TipoToken.SET) {
 			// Checar que variable exista
-			validateVariable(n, 0, tabla);
+			validateVariable(n.getHijos().get(0), tabla);
 			if (this.error)
 				return null;
 		}
@@ -270,16 +264,6 @@ public class Solver {
 		}
 	}
 
-	public Boolean validateVariable(Nodo n, int childNumber, TablaSimbolos tabla) {
-		if (!tabla.existeIdentificador(n.getHijos().get(childNumber).getValue().lexema)) {
-			this.errorMessage = ("Variable no inicializada");
-			this.error = true;
-			return null;
-		} else {
-			return true;
-		}
-	}
-
 	public Boolean invalidateVariable(Nodo n, TablaSimbolos tabla) {
 		if (tabla.existeIdentificador(n.getValue().lexema)) {
 			this.errorMessage = ("Variable ya existe");
@@ -290,13 +274,4 @@ public class Solver {
 		}
 	}
 
-	public Boolean invalidateVariable(Nodo n, int childNumber, TablaSimbolos tabla) {
-		if (tabla.existeIdentificador(n.getHijos().get(childNumber).getValue().lexema)) {
-			this.errorMessage = ("Variable ya existe");
-			this.error = true;
-			return null;
-		} else {
-			return true;
-		}
-	}
 }
