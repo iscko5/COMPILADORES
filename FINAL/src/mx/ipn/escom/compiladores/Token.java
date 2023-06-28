@@ -5,20 +5,17 @@ public class Token {
     public final TipoToken tipo;
     public final String lexema;
     public final Object literal;
-    public final int linea;
 
-    public Token(TipoToken tipo, String lexema, int linea) {
+    public Token(TipoToken tipo, String lexema) {
         this.tipo = tipo;
         this.lexema = lexema;
         this.literal = null;
-        this.linea = linea;
     }
-    
-    public Token(TipoToken tipo, String lexema, Object literal, int linea) {
+
+    public Token(TipoToken tipo, String lexema, Object literal) {
         this.tipo = tipo;
         this.lexema = lexema;
         this.literal = literal;
-        this.linea = linea;
     }
 
     @Override

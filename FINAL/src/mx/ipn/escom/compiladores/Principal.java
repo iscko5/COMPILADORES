@@ -1,9 +1,5 @@
 package mx.ipn.escom.compiladores;
 
-
-import mx.ipn.escom.compiladores.generadores.*;
-import mx.ipn.escom.compiladores.solvers.SolverException;
-
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.io.BufferedReader;
@@ -11,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-
 
 public class Principal {
 
@@ -76,9 +71,6 @@ public class Principal {
         GeneradorPostfija gpf = new GeneradorPostfija(tokens);
         List<Token> postfija = gpf.convertir();
 
-        // System.out.println(tokens);
-        // System.out.println(postfija);
-
         if (postfija.size() == 0) {
             return;
         }
@@ -91,17 +83,12 @@ public class Principal {
         GeneradorAST gast = new GeneradorAST(postfija);
         Arbol programa = gast.generarAST();
         programa.tabla = tabla;
-        System.out.println(programa);
 
-        try {
-            programa.recorrer();
-            tabla = programa.tabla;
-        } catch(SolverException exception) {
-            String donde = "semántico";
-            String mensaje = exception.getMessage();
-            int linea = 0;
+        programa.recorrer();
+        tabla = programa.tabla;
 
-            reportar(linea, donde, mensaje);
+        if (programa.error) {
+            reportar(0, "semántico", programa.errorMessage);
         }
     }
 

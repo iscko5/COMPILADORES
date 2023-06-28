@@ -1,6 +1,5 @@
-package mx.ipn.escom.compiladores.generadores;
+package mx.ipn.escom.compiladores;
 
-import mx.ipn.escom.compiladores.*;
 import java.util.List;
 import java.util.Stack;
 
@@ -22,7 +21,7 @@ public class GeneradorAST {
 
         Nodo padre = raiz;
 
-        for (int i=0; i< postfija.size(); ++i) {
+        for (int i = 0; i < postfija.size(); ++i) {
             Token t = postfija.get(i);
             if (t.tipo == TipoToken.EOF) {
                 break;
@@ -31,7 +30,7 @@ public class GeneradorAST {
             if (t.tipo == TipoToken.IDENTIFICADOR && !set) {
                 set = true;
                 --i;
-                Nodo n = new Nodo(new Token(TipoToken.SET, "set", t.linea));
+                Nodo n = new Nodo(new Token(TipoToken.SET, "set"));
 
                 padre = pilaPadres.peek();
                 padre.insertarSiguienteHijo(n);
