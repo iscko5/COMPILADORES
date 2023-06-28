@@ -1,4 +1,4 @@
-//package mx.ipn.escom.compiladores;
+package mx.ipn.escom.compiladores;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,6 @@ public class Nodo {
         String res = "\n" + this.value.toString();
         if (this.hijos != null) {
             for (Nodo n : this.hijos) {
-                res += "\n";
                 res += n.toString().replaceAll("\n", "\n  ");
             }
         }
